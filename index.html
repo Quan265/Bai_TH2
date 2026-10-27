@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Test API Backend với Axios</title>
+    <!-- Thư viện Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h2>Test gọi API Backend ASP.NET Core</h2>
+    <button onclick="fetchStudents()">1. GET (Lấy danh sách)</button>
+    <button onclick="createStudent()">2. POST (Thêm mới)</button>
+    <button onclick="updateStudent(1)">3. PUT (Sửa ID 1)</button>
+    <button onclick="deleteStudent(1)">4. DELETE (Xóa ID 1)</button>
+
+    <script>
+        // Địa chỉ URL Server Back-end đang chạy
+        const API_URL = 'http://localhost:5182/api/students';
+
+        // 1. Phương thức GET
+        async function fetchStudents() {
+            try {
+                const res = await axios.get(API_URL);
+                console.log("--- DANH SÁCH SINH VIÊN (GET) ---", res.data);
+                alert("Đã lấy dữ liệu thành công! Mở F12 -> Console để xem.");
+            } catch (err) {
+                console.error("Lỗi GET:", err);
+            }
+        }
+
+        // 2. Phương thức POST
+        async function createStudent() {
+            try {
+                const newStudent = {
+                    name: "Nguyen Van A",
+                    age: 21,
+                    major: "CNTT"
+                };
+                const res = await axios.post(API_URL, newStudent);
+                console.log("--- KẾT QUẢ THÊM MỚI (POST) ---", res.data);
+                alert("Thêm sinh viên thành công!");
+            } catch (err) {
+                console.error("Lỗi POST:", err);
+            }
+        }
+
+        // 3. Phương thức PUT
+        async function updateStudent(id) {
+            try {
+                const updatedStudent = {
+                    id: id,
+                    name: "Nguyen Van A (Đã sửa)",
+                    age: 22,
+                    major: "Khoa học máy tính"
+                };
+                await axios.put(`${API_URL}/${id}`, updatedStudent);
+                console.log(`--- ĐÃ CẬP NHẬT SINH VIÊN ID ${id} (PUT) ---`);
+                alert("Cập nhật thành công!");
+            } catch (err) {
+                console.error("Lỗi PUT:", err);
+            }
+        }
+
+        // 4. Phương thức DELETE
+        async function deleteStudent(id) {
+            try {
+                await axios.delete(`${API_URL}/${id}`);
+                console.log(`--- ĐÃ XÓA SINH VIÊN ID ${id} (DELETE) ---`);
+                alert("Xóa thành công!");
+            } catch (err) {
+                console.error("Lỗi DELETE:", err);
+            }
+        }
+    </script>
+</body>
+</html>
